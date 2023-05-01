@@ -17,7 +17,7 @@ type respStruct struct {
 }
 
 func Login() (bool, respStruct) {
-	client := create_restry_client(Config.Interface)
+	client := createRestryClient(Config.Interface)
 	loginFlag := false
 	var resps respStruct
 	formData := map[string]string{
