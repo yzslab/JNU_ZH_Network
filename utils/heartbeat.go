@@ -1,19 +1,15 @@
 package utils
 
 import (
-	"crypto/tls"
 	"fmt"
 	"log"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/go-resty/resty/v2"
 )
 
 func HeartBeat(loginStruct respStruct, num *int) bool {
-	client := resty.New()
-	client.SetTLSClientConfig(&tls.Config{InsecureSkipVerify: true})
+	client := create_restry_client(Config.Interface)
 	headers := map[string]string{
 		"User-Agent":      "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36",
 		"Accept":          "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",

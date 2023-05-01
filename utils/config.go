@@ -11,12 +11,13 @@ import (
 var Config Conf
 
 type Conf struct {
-	Username string `yaml:"username"`
-	Password string `yaml:"password"`
-	AuthURL  string `yaml:"authurl"`
-	AuthIP   string
-	LoginURL string
-	HBTime   int `yaml:"hbtime"`
+	Username  string `yaml:"username"`
+	Password  string `yaml:"password"`
+	AuthURL   string `yaml:"authurl"`
+	Interface string `yaml:"interface"`
+	AuthIP    string
+	LoginURL  string
+	HBTime    int `yaml:"hbtime"`
 }
 
 func (c *Conf) GetConf(path string) {

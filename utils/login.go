@@ -1,15 +1,12 @@
 package utils
 
 import (
-	"crypto/tls"
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"log"
 	"net/url"
 	"strings"
-
-	"github.com/go-resty/resty/v2"
 )
 
 type respStruct struct {
@@ -20,8 +17,7 @@ type respStruct struct {
 }
 
 func Login() (bool, respStruct) {
-	client := resty.New()
-	client.SetTLSClientConfig(&tls.Config{InsecureSkipVerify: true})
+	client := create_restry_client(Config.Interface)
 	loginFlag := false
 	var resps respStruct
 	formData := map[string]string{
