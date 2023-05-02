@@ -21,7 +21,9 @@ func main() {
 		hbFlag := utils.HeartBeat(loginStruct, &hbcount)
 		if !hbFlag {
 			count++
+			time.Sleep(time.Second * 3)
+		} else {
+			time.Sleep(time.Minute * time.Duration(utils.Config.HBTime))
 		}
-		time.Sleep(time.Minute * time.Duration(utils.Config.HBTime))
 	}
 }
