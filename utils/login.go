@@ -52,6 +52,7 @@ func Login() (bool, respStruct) {
 		"Accept":          "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
 		"Accept-Language": "zh-CN,zh;q=0.9",
 	}
+	log.Println("尝试登录")
 	res, err := client.R().
 		EnableTrace().
 		SetHeaders(headers).

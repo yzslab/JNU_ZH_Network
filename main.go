@@ -14,16 +14,27 @@ func main() {
 	utils.LogInit(*logFlag)
 	fmt.Println("使用配置:", *configPath)
 	utils.Config.GetConf(*configPath)
-	loginFlag, loginStruct := utils.Login()
-	count := 0
-	hbcount := 0
-	for loginFlag && count < 5 {
-		hbFlag := utils.HeartBeat(loginStruct, &hbcount)
-		if !hbFlag {
-			count++
-			time.Sleep(time.Second * 3)
-		} else {
-			time.Sleep(time.Minute * time.Duration(utils.Config.HBTime))
+	for {
+		loginFlag, loginStruct := utils.Login()
+		// keep trying to login until success
+		if loginFlag == false {
+			time.Sleep(time.Second * 1)
+			continue // retry login
+		}
+
+		// begin heartbeat
+		hbErrorCount := 0
+		hbcount := 0
+		for hbErrorCount < 5 {
+			hbFlag := utils.HeartBeat(loginStruct, &hbcount)
+			if !hbFlag {
+				// if error occurred, retry
+				hbErrorCount++
+				time.Sleep(time.Second * 1)
+			} else {
+				hbErrorCount = 0 // reset error count if heartbeat success
+				time.Sleep(time.Second * time.Duration(utils.Config.HBTime))
+			}
 		}
 	}
 }
