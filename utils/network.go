@@ -12,20 +12,24 @@ import (
 func createRestryClient(nic string) *resty.Client {
 	client := resty.New()
 
+	httpTransport := &http.Transport{
+		TLSHandshakeTimeout:   3 * time.Second,
+		ResponseHeaderTimeout: 3 * time.Second,
+		TLSClientConfig: &tls.Config{
+			InsecureSkipVerify: true,
+		},
+	}
+
 	if nic != "" {
 		bind_addr := getNICAddress(nic)
 		d := net.Dialer{
 			LocalAddr: bind_addr,
 			Timeout:   3 * time.Second,
 		}
-		client.SetTransport(&http.Transport{
-			Dial:                d.Dial,
-			TLSHandshakeTimeout: 3 * time.Second,
-		})
+		httpTransport.Dial = d.Dial
 	}
 
-	// must place after client.SetTransport()
-	client.SetTLSClientConfig(&tls.Config{InsecureSkipVerify: true})
+	client.SetTransport(httpTransport)
 
 	return client
 }
